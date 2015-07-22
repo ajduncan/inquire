@@ -1,0 +1,90 @@
+  <% if (flash && flash.err) { %>
+    <ul class="alert alert-danger">
+      <li>Error submitting the request, please try again.</li>
+    </ul>
+  <% } %>
+
+  <div class="container">
+
+    <p class="lead">What is your request?</p>
+
+    <h2>Request!</h2>
+
+  </div>
+
+  <div class="container">
+
+    <form action="/public/request" method="post" id="request-form" class="form-horizontal" >
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="sr-only" for="name">Your name</label>
+            <input class="form-control" id="name" name="name" placeholder="Your name" type="text" required="true" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="sr-only" for="email1">Your email</label>
+            <input class="form-control" id="email1" name="email1" placeholder="Your email" type="email" data-parsley-equalto="#email2" required="true" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="sr-only" for="email2">Confirm your email</label>
+            <input class="form-control" id="email2" name="email2" placeholder="Confirm your email" type="email" data-parsley-equalto="#email1" required="true" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" style="margin-top: 20px;">
+            <label class="sr-only" for="category">Type of request</label>
+            <select class="form-control" id="category" name="category">
+            <% _.each(categories, function(category) { %>
+              <option value="<%= category.id %>"><%= category.name %></option>
+            <% }); %>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="sr-only" for="request">Request</label>
+            <textarea class="form-control" id="request" name="request" rows="10" placeholder="what is your request?" required="true"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="checkbox">
+              <label>
+                  <input type="checkbox" name="contact_okay" /> It's okay to contact me
+              </label>
+            </div>
+        </div>
+      </div>
+
+      <br><br>
+
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-info btn-lg">Send Request</button>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+<script>
+$(document).ready(function() {
+  $('#request-form').parsley();
+});
+</script>

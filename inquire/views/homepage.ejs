@@ -1,0 +1,6 @@
+<p>
+<a href="/public/request">Submit a request</a>
+<% if (req.session.authenticated !== true) { %>
+or <a href="/login">Sign in</a>
+<% } %>
+</p>

@@ -1,0 +1,164 @@
+<form action="/request/update/<%= request.id %>" method="post" id="edit-request-form" class="form-horizontal">
+  <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+
+  <% if (flash && flash.err) { %>
+    <ul class="alert alert-danger">
+    <!-- <% Object.keys(flash.err).forEach(function(error){ %>
+      <li> <%- JSON.stringify(flash.err[error]) %> </li>
+    <% }) %>  -->
+      <p>Error saving request.</p>
+    </ul>
+  <% } %>
+
+  <div class="form-group">
+    <label for="submitted" class="col-sm-2 control-label">Submitted:</label>
+    <div class="col-sm-10">
+      <p align="left"><%=: request.submit_date | formatDateTime %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="processed" class="col-sm-2 control-label">Processed:</label>
+    <div class="col-sm-10">
+      <% if (request.processed_date) { %>
+        <p align="left"><%=: request.processed_date | formatDateTime %></p>
+      <% } else { %>
+        <p align="left">Not yet processed.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" placeholder="Name" id="name" name="name" required="true" value="<%= request.name %>" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">Email:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" placeholder="Email" id="email" name="email" required="true" value="<%= request.email %>" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="category" class="col-sm-2 control-label">Type of request:</label>
+    <div class="col-sm-10">
+      <select class="form-control" name="category" required="true">
+        <% _.each(categories, function(category) { %>
+          <% if (request.category == category.id) { %>
+            <option value="<%= category.id %>" selected="true"><%= category.name %></option>
+          <% } else { %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+          <% } %>
+        <% }); %>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="request" class="col-sm-2 control-label">Request:</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" placeholder="Request" rows="4" id="request" name="request" required="true"><%= request.request %></textarea>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact_okay" class="col-sm-2 control-label">Okay to contact?</label>
+    <div class="col-sm-10" align="left">
+      <div class="btn-group" data-toggle="buttons">
+      <% if (request.contact_okay) { %>
+        <label class="btn btn-default active">
+          <input type="radio" class="form-control" name="contact_okay" value="true" checked="true" /> Yes
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" class="form-control" name="contact_okay" value="false" /> No
+        </label>
+      <% } else { %>
+        <label class="btn btn-default">
+          <input type="radio" class="form-control" name="contact_okay" value="true" /> Yes
+        </label>
+        <label class="btn btn-default active">
+          <input type="radio" class="form-control" name="contact_okay" value="false" checked="true" /> No
+        </label>
+      <% } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact_okay" class="col-sm-2 control-label">Mark Ineligible?</label>
+    <div class="col-sm-10" align="left">
+      <div class="btn-group" data-toggle="buttons">
+      <% if (request.ineligible) { %>
+        <label class="btn btn-default active">
+          <input type="radio" class="form-control" name="ineligible" value="true" checked="true" /> Yes
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" class="form-control" name="ineligible" value="false" /> No
+        </label>
+      <% } else { %>
+        <label class="btn btn-default">
+          <input type="radio" class="form-control" name="ineligible" value="true" /> Yes
+        </label>
+        <label class="btn btn-default active">
+          <input type="radio" class="form-control" name="ineligible" value="false" checked="true" /> No
+        </label>
+      <% } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact_okay" class="col-sm-2 control-label">Mark Processed?</label>
+    <div class="col-sm-10" align="left">
+      <div class="btn-group" data-toggle="buttons">
+      <% if (request.processed_date) { %>
+        <label class="btn btn-default active">
+          <input type="radio" class="form-control" name="processed" value="true" checked="true" /> Yes
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" class="form-control" name="processed" value="false" /> No
+        </label>
+      <% } else { %>
+        <label class="btn btn-default">
+          <input type="radio" class="form-control" name="processed" value="true" /> Yes
+        </label>
+        <label class="btn btn-default active">
+          <input type="radio" class="form-control" name="processed" value="false" checked="true" /> No
+        </label>
+      <% } %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10" align="left">
+      <button type="submit" class="btn btn-sm btn-primary">Update Request</button>
+      <button id="delete" type="button" class="btn btn-sm btn-danger">Delete Request</button>
+    </div>
+  </div>
+</form>
+
+<span id="clipboard" style="visibility: hidden">
+</span>
+
+<script>
+$(document).ready(function() {
+  $('#delete').on('click', function() {
+    var id = <%= request.id %>;
+    var r = confirm("Are you sure?");
+
+    if (r == true) {
+      location.assign('/request/destroy/' + id);
+    }
+  });
+
+  $('#copy').on('click', function() {
+
+  });
+});
+</script>

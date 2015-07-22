@@ -1,0 +1,32 @@
+- name: set locale to {{ locale }}
+  action: command /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
+  sudo: yes
+
+- name: add apt repository (for nodejs)
+  apt_repository: repo='ppa:chris-lea/node.js' state=present
+
+- name: apt-get update
+  command: apt-get update
+
+- name: Install system dependencies
+  apt: name={{ item }} state=present
+  with_items:
+    - nodejs
+    - g++
+
+- name: Link nodejs to node
+  action: file src=/usr/bin/nodejs dest=/usr/bin/node state=link
+
+# For deployments only.
+- name: Create user.
+  sudo: yes
+  action: user home=/home/{{ user_name }} name={{ user_name }} state=present
+  when: not vagrant
+
+- name: Create the project directory.
+  sudo: yes
+  action: file state=directory path={{ project_directory }}
+  when: not vagrant
+
+# end deployments
+

@@ -1,0 +1,19 @@
+{
+  "apps" : [{
+    "name"        : "inquire",
+    "script"      : "app.js",
+    "log_date_format"  : "YYYY-MM-DD HH:mm Z",
+    "log_file"   : "logs/inquire.log",
+    "error_file" : "logs/inquire-err.log",
+    "out_file"   : "logs/inquire-out.log",
+    "pid_file"   : "logs/inquire.pid",
+    "watch"       : false,
+    "ignoreWatch" : ["[\\/\\\\]\\./", "node_modules", ".tmp", "views", "assets"],
+    "cwd"         : "/vagrant/inquire",
+    "env": {
+        "MIGRATE": "alter",
+        "NODE_ENV": "development",
+        "NODE_PATH": "/vagrant/inquire"
+    }
+  }]
+}

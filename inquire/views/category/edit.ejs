@@ -1,0 +1,41 @@
+<form action="/category/update/<%= category.id %>" method="post" class="form-horizontal">
+  <input type="hidden" name="_csrf" value="<%= _csrf %>"/>
+
+  <% if (flash && flash.err) { %>
+    <ul class="alert alert-danger">
+    <!-- <% Object.keys(flash.err).forEach(function(error){ %>
+      <li> <%- JSON.stringify(flash.err[error]) %> </li>
+    <% }) %>  -->
+      <p>Error saving category.</p>
+    </ul>
+  <% } %>
+
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" placeholder="Name" id="name" name="name" required="true" value="<%= category.name %>" />
+    </div>
+  </div>
+
+  <br>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10" align="left">
+      <button type="submit" class="btn btn-sm btn-primary">Update Category</button>
+      <button id="delete" type="button" class="btn btn-sm btn-danger">Delete Category</button>
+    </div>
+  </div>
+</form>
+
+<script>
+$(document).ready(function() {
+  $('#delete').on('click', function() {
+    var id = <%= category.id %>;
+    var r = confirm("Are you sure?");
+
+    if (r == true) {
+      location.assign('/category/destroy/' + id);
+    }
+  });
+});
+</script>

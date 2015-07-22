@@ -1,0 +1,40 @@
+<h1>Categories</h1>
+
+<div class="container">
+  <% if (typeof categories[0] === 'undefined') { %>
+    <strong>No categories found.</strong>
+  <% } else { %>
+  <table class="table" id="categories">
+    <thead>
+      <tr>
+        <th width="100%">Name</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    <% _.each(categories, function(category) { %>
+    <tr data-id="<%= category.id %>" data-model="category">
+      <td align="left"><%= category.name %></td>
+    </tr>
+    <% }); %>
+    </tbody>
+  </table>
+    <% } %>
+  <br><br><br>
+  <p align="right"><a href="/category/new" class="btn btn-sm btn-primary">Create a New Category</a></p>
+  <br>
+</div>
+
+<script>
+$(document).ready(function(){
+    var categories = $('#categories').DataTable({
+      "order": [[0, "asc"]]
+    });
+
+    $('.table tbody').on('click', 'tr', function() {
+      var id = $(this).attr('data-id');
+      location.assign('/category/edit/' + id);
+    });
+
+});
+</script>

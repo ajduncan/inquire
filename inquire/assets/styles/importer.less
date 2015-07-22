@@ -1,0 +1,77 @@
+/**
+ * importer.less
+ *
+ * By default, new Sails projects are configured to compile this file
+ * from LESS to CSS.  Unlike CSS files, LESS files are not compiled and
+ * included automatically unless they are imported below.
+ *
+ * The LESS files imported below are compiled and included in the order
+ * they are listed.  Mixins, variables, etc. should be imported first
+ * so that they can be accessed by subsequent LESS stylesheets.
+ *
+ * (Just like the rest of the asset pipeline bundled in Sails, you can
+ * always omit, customize, or replace this behavior with SASS, SCSS,
+ * or any other Grunt tasks you like.)
+ */
+
+
+
+// For example:
+//
+// @import 'variables/colors.less';
+// @import 'mixins/foo.less';
+// @import 'mixins/bar.less';
+// @import 'mixins/baz.less';
+//
+// @import 'styleguide.less';
+// @import 'pages/login.less';
+// @import 'pages/signup.less';
+//
+// etc.
+
+body {
+  padding-top: 50px;
+}
+.main_content {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+tr.strikeout {
+  color: #c0c0c0;
+}

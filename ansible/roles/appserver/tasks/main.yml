@@ -1,0 +1,9 @@
+- include: inquire.yml
+- include: pm2-web.yml
+
+- name: Start processes using pm2
+  sudo: yes
+  sudo_user: vagrant
+  command: pm2 start processes.json
+  args:
+    chdir: "{{ project_directory }}"

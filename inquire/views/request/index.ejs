@@ -1,0 +1,114 @@
+<div class="container">
+  <p><strong>You may click a row to edit and process a single request.</strong></p>
+
+  <% if (typeof unprocessed_requests[0] === 'undefined') { %>
+    <strong>No unprocessed requests found.</strong><br><br>
+  <% } else { %>
+  <h2>New Requests</h2>
+  <form action="/request/group" method="post" id="process-request-form" class="form-horizontal">
+    <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+
+    <table class="table" id="unprocessed">
+      <thead>
+        <tr>
+          <th width="15%">Name</th>
+          <th width="15%">Email</th>
+          <th width="10%">Category</th>
+          <th width="15%">Submitted</th>
+          <th width="40%">Request</th>
+          <th width="5%"><input type="checkbox" name="toggle_group" /></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% _.each(unprocessed_requests, function(request) { %>
+        <tr data-id="<%= request.id %>" data-model="request">
+          <td align="left"><%= request.name %></td>
+          <td align="left"><%= request.email %></td>
+          <td align="left">
+          <% if (request.category) { %>
+            <%= request.category.name %>
+          <% } else { %>
+            No Category or Category Deleted.
+          <% } %>
+          </td>
+          <td align="left"><%=: request.submit_date | formatDateTime %></td>
+          <td align="left"><%=: request.request %></td>
+          <td align="left"><input type="checkbox" name="group" value="<%= request.id %>" /></td>
+        </tr>
+      <% }); %>
+      </tbody>
+    </table>
+    <br><br>
+    <p align="right">
+      <button id="groupedit" class="btn btn-sm btn-primary" type="submit">View and Process Requests</button>
+      <a href="/request/new" class="btn btn-sm btn-primary">Create a New Request</a>
+    </p>
+  </form>
+  <% } %>
+
+  <% if (typeof processed_requests[0] === 'undefined') { %>
+    <strong>No processed requests found.</strong><br><br>
+  <% } else { %>
+  <h2>Processed Requests</h2>
+  <table class="table" id="processed">
+    <thead>
+      <tr>
+        <th width="15%">Name</th>
+        <th width="10%">Email</th>
+        <th width="10%">Category</th>
+        <th width="20%">Processed</th>
+        <th width="45%">Request</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% _.each(processed_requests, function(request) { %>
+      <tr data-id="<%= request.id %>" data-model="request" <% if (request.ineligible) { %> class="strikeout" <% } %>>
+        <td align="left"><%= request.name %></td>
+        <td align="left"><%= request.email %></td>
+        <td align="left">
+        <% if (request.category) { %>
+          <%= request.category.name %>
+        <% } else { %>
+          No Category or Category Deleted.
+        <% } %>
+        </td>
+        <td align="left"><%=: request.processed_date | formatDateTime %></td>
+        <td align="left"><%= request.request %></td>
+      </tr>
+    <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<script>
+$(document).ready(function(){
+  var unprocessed = $('#unprocessed').DataTable({
+    "order": [[2, "asc"]]
+  });
+
+  var processed = $('#processed').DataTable({
+    "order": [[3, "asc"]]
+  });
+
+  $('input[name="toggle_group"]').click(function() {
+    var group_checkboxes = $('input[name="group"]');
+    if ($(this).prop("checked")) {
+      group_checkboxes.prop("checked", true);
+    } else {
+      group_checkboxes.prop("checked", false);
+    }
+  });
+
+  $('.table tbody').on('click', 'tr', function(e) {
+    if (e.target.type == "checkbox") {
+      e.stopPropagation();
+    } else {
+      var id = $(this).attr('data-id');
+      location.assign('/request/edit/' + id);
+    }
+  });
+});
+</script>

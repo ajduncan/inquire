@@ -1,0 +1,59 @@
+<div class="container">
+  <% if (typeof requests[0] === 'undefined') { %>
+    <strong>No requests found.</strong><br><br>
+  <% } else { %>
+  <h2>Requests</h2>
+  <form action="/request/processgroup" method="post" id="group-request-form" class="form-horizontal">
+    <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+
+    <% var cname = ''; %>
+    <% _.each(requests, function(request) { %>
+      <div align="left">
+        <% if (cname != request.category.name) { %>
+        <% cname = request.category.name; %>
+        <h2><%= request.category.name %></h2>
+        <% } %>
+        <input type="hidden" name="group" value="<%= request.id %>" />
+        <br />
+        <%=: request.request %>
+        <br />
+        <strong>
+        <% if (request.contact_okay) { %>
+          <a href="mailto:<%= request.email %>"><%= request.name %></a>
+        <% } else { %>
+          <%= request.name %></td>
+        <% } %>
+        </strong>
+      </div>
+    <% }); %>
+
+    <br><br>
+
+    <div align="right">
+      <!-- <button id="copy" type="button">Copy to Clipboard</button> -->
+      <button id="groupedit" type="submit">Done</button>
+    </div>
+  </form>
+  <% } %>
+</div>
+
+<script>
+$(document).ready(function(){
+  var group_requests = $('#group_requests').DataTable({
+    "order": [[0, "asc"]],
+    "paging": false,
+    "info": false,
+    "searching": false
+  });
+
+  /*
+  $('#copy').click(function(e) {
+    e.preventDefault();
+
+    var textRange = document.body.createTextRange();
+    textRange.moveToElementText(document.getElementById('group_requests'));
+    textRange.execCommand("Copy");
+  });
+  */
+});
+</script>

@@ -1,0 +1,13 @@
+- name: Install (global) grunt-cli
+  npm: name=grunt-cli global=yes
+
+- name: Install (global) bower
+  npm: name=bower global=yes
+
+- name: Install (global) sails for debugging
+  npm: name=sails global=yes
+
+- name: Install project (local npm) dependencies
+  npm: path={{ app_directory }}
+  sudo: yes
+  sudo_user: "{{ user_name }}"
