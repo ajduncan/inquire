@@ -23,15 +23,18 @@
     "lodash": "^3.6.0",
     "moment": "^2.9.0",
     "rc": "~0.5.0",
-    "sails": "~0.11.0",
+    "sails": "~1.0.0",
     "sails-disk": "~0.10.0",
-    "sails-postgresql": "~0.10.14"
+    "sails-postgresql": "~1.0.0",
+    "@snyk/protect": "latest"
   },
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js",
     "test": "PORT=9999 NODE_ENV=test mocha -R spec -b --recursive -t 20000",
-    "postinstall": "./node_modules/.bin/bower install"
+    "postinstall": "./node_modules/.bin/bower install",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "main": "app.js",
   "repository": {
@@ -46,5 +49,6 @@
     "sails-memory": "^0.10.3",
     "should": "^5.2.0",
     "supertest": "^0.15.0"
-  }
+  },
+  "snyk": true
 }
